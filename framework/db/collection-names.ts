@@ -1,4 +1,5 @@
-import { mongoClientPromise, databaseName } from "@framework/db/mongo-client";
+import mongoClientPromise from "@framework/db/mongo-client";
+const databaseName = process.env.MONGODB_DATABASE_NAME;
 
 async function portfoliosCollectionName() {
   const mongoClient = await mongoClientPromise;

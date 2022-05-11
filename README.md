@@ -17,11 +17,48 @@ The folders and files in this projects mimics the overall organization of that o
 
 Calls to mongoDB require authentication with user/pass. This information is stored locally on each development environment for safety reasons.
 
-# API References
-| Command | Return Types | Notes |
-| ------- | ------ | ----- |
-| `GET` `/api/get-tvl` | This method returns a single JSON with key `tvl` and a `float` total value locked (tvl) in USD. | The `tvl` returned by this method is the sum of individual values for each asset of each basket in all chains that DeFi Basket operates. Currently we operate only on Polygon. |
+# API Reference
 
+### `GET` `/api/v1/get-tvl`
+
+### Description
+
+This method returns a JSON with key Total Value Locked (TVL) by network in USD. TVL for DeFi Basket is calculated as the sum of individual values for each asset of each basket in a given set of networks. 
+
+The `network` field is an array of objects containing the network name and the TVL associated to it.
+
+The `tvl` field is the sum of TVLs for all networks.
+
+### Request
+
+URL: `https://defibasket.org/api/v1/get-tvl`
+Method: `GET`
+
+### Response
+
+Model:
+
+ ```{
+  "networks": [
+    {
+      "network": string
+      "tvl": float
+    }
+  ],
+  "tvl": float
+}```
+
+Example:
+
+```{
+  "networks": [
+    {
+      "network": "polygon",
+      "tvl": 127618.04831480393
+    }
+  ],
+  "tvl": 127618.04831480393
+}```
   
 # Database
 DeFiBasket uses MongoDB in its backend to register and organize all interactions with its smart contracts. Currently we don't have a public access to it.
@@ -30,4 +67,4 @@ DeFiBasket uses MongoDB in its backend to register and organize all interactions
 If you have any questions or want to contribute to this projects, please join us in our [`Discord`](https://discord.gg/5AVTGwkCEs).
 
 # License
-MIT
+GPL 3.0

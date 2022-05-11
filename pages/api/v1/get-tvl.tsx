@@ -1,5 +1,5 @@
 import { portfoliosCollectionName } from "@framework/db/collection-names";
-import { mongoClientPromise, databaseName } from "@framework/db/mongo-client";
+import mongoClientPromise from "@framework/db/mongo-client";
 import reportApiError from "@framework/utils/report-api-error";
 
 const handler = async (request, response) => {
@@ -10,6 +10,8 @@ const handler = async (request, response) => {
     "max-age=0, s-maxage=60, stale-while-revalidate, public"
   );
   try {
+    const databaseName = process.env.MONGODB_DATABASE_NAME;
+
     // TODO: use getPortfolios instead
     const cursor = await mongoClient
       .db(databaseName)
@@ -20,17 +22,30 @@ const handler = async (request, response) => {
         },
         {
           $group: {
-            _id: null,
+            _id: "$networkName",
             tvl: { $sum: "$cached.value" },
           },
         },
       ]);
 
-    if (await cursor.hasNext()) {
+    const jsonResponse = {
+      networks: [],
+      tvl: 0,
+    };
+
+    while (await cursor.hasNext()) {
       const tvlResult = await cursor.next();
-      response.status(200);
-      response.json({"tvl":tvlResult.tvl});
+      jsonResponse["networks"].push({
+        network: tvlResult["_id"],
+        tvl: tvlResult["tvl"],
+      });
     }
+
+    jsonResponse["tvl"] = jsonResponse["networks"].reduce(function (acc, cur) {
+      return acc + cur.tvl;
+    }, 0);
+    response.status(200);
+    response.json(jsonResponse);
   } catch (e) {
     response.status(500).json(e);
     reportApiError(e);
