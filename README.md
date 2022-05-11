@@ -32,13 +32,15 @@ The `tvl` field is the sum of TVLs for all networks.
 ### Request
 
 URL: `https://defibasket.org/api/v1/get-tvl`
+
 Method: `GET`
 
 ### Response
 
 Model:
 
- ```{
+ ```
+ {
   "networks": [
     {
       "network": string
@@ -46,11 +48,13 @@ Model:
     }
   ],
   "tvl": float
-}```
+}
+```
 
 Example:
 
-```{
+```
+{
   "networks": [
     {
       "network": "polygon",
@@ -58,7 +62,8 @@ Example:
     }
   ],
   "tvl": 127618.04831480393
-}```
+}
+```
   
 # Database
 DeFiBasket uses MongoDB in its backend to register and organize all interactions with its smart contracts. Currently we don't have a public access to it.
