@@ -18,9 +18,9 @@ The folders and files in this projects mimics the overall organization of that o
 Calls to mongoDB require authentication with user/pass. This information is stored locally on each development environment for safety reasons.
 
 # API References
-| Command | Types | Notes |
+| Command | Return Types | Notes |
 | ------- | ------ | ----- |
-| GET /api/get-tvl | This method returns a single JSON with key `tvl` and a `float` value. | The Total Value Locked returned by this method is the sum of individual values for each basket in all chains that DeFi Basket operates. Currently we operate only on Polygon. |
+| `GET` `/api/get-tvl` | This method returns a single JSON with key `tvl` and a `float` total value locked (tvl) in USD. | The `tvl` returned by this method is the sum of individual values for each asset of each basket in all chains that DeFi Basket operates. Currently we operate only on Polygon. |
 
   
 # Database
